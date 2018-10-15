@@ -51,18 +51,18 @@ class App extends Component {
     addRoute(e) {
         let zipText = this.state.inputValue.trim();
         if (e.key === "Enter" && zipText) {
-            nextId++;
-            window.ymaps.geocode(zipText)
-                .then(res => res.geoObjects.get(0).geometry.getCoordinates())
+            let rawCoordinates = window.ymaps.geocode(zipText);
+                rawCoordinates.then(res => res.geoObjects.get(0).geometry.getCoordinates())
                 .then((coordinates) => {
+                    nextId++;
                     let mark = new window.ymaps.Placemark(coordinates, {
                         balloonContentHeader: `Маршрут №${nextId}`,
                         hintContent: "Подробнее"
                     }, {
                         draggable: true
                     });
-
                     this.onDragPlacemark(mark);
+
 
                     this.setState((prevState => {
                         return {
